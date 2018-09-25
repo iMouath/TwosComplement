@@ -35,16 +35,90 @@ public class MainActivity extends AppCompatActivity
         return answer;
     }
 
+    private String addOne2(String bin)
+    {
+        return Integer.toBinaryString(Integer.parseInt(bin, 2) + 1);
+    }
+
+    private int binaryToDecimal(String bin)
+    {
+        int place = 1;
+        int sum = 0;
+        for(int i = bin.length()-1; i >= 0; i--)
+        {
+
+            sum += (place * (bin.charAt(i) == '0'?0:1));
+            place *= 2;
+        }
+        return sum;
+    }
+
+    private String decimalToBinary(int n)
+    {
+        String answer = "";
+        while(n != 0)
+        {
+            answer = (n%2) + answer;
+            n /= 2;
+        }
+        return answer;
+    }
+
+    private String addOne3(String bin)
+    {
+        return this.decimalToBinary(this.binaryToDecimal(bin) + 1);
+    }
+
     private String addOne(String bin)
     {
         //will return a new String that is the given String with 1 added to it
-        return bin;
+        int carry = 0;
+        String temp = "";
+        for(int i = 0; i < bin.length()-1; i++)
+        {
+            temp += "0";
+        }
+        temp += "1";
+
+        String answer = "";
+        //carry = 0
+        //"01000
+        //"10111"
+        //"00001"
+        //"11000"
+
+        for(int i = bin.length() - 1; i >= 0; i--)
+        {
+            int n1 = bin.charAt(i) == '0'?0:1;
+            int n2 = temp.charAt(i) == '0'?0:1;
+            int sum = n1 + n2 + carry;
+            if(sum < 2)
+            {
+                carry = 0;
+                answer = sum + answer;
+            }
+            else if(sum == 2)
+            {
+                carry = 1;
+                answer = 0 + answer;
+            }
+            else
+            {
+                carry = 1;
+                answer = 1 + answer;
+            }
+        }
+        if(carry == 1)
+        {
+            answer = 1 + answer;
+        }
+        return answer;
     }
 
     private String encodeAsTwosComplement(String bin)
     {
         String bitsFlipped = this.flipTheBits(bin);
-        String oneAdded = this.addOne(bitsFlipped);
+        String oneAdded = this.addOne3(bitsFlipped);
         return oneAdded;
     }
 
