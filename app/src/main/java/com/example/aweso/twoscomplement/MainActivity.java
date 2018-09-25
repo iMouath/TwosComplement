@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity
 {
     private TextView answerTV;
     private EditText inputET;
-    private Switch negativeSwitch;
+    private TextView decodeTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         this.answerTV = (TextView)this.findViewById(R.id.answerTV);
         this.inputET = (EditText)this.findViewById(R.id.inputET);
-        this.negativeSwitch = (Switch)this.findViewById(R.id.negativeSwitch);
+        this.decodeTV = (TextView)this.findViewById(R.id.decodeTV);
     }
 
     private String flipTheBits(String bin)
@@ -122,18 +122,33 @@ public class MainActivity extends AppCompatActivity
         return oneAdded;
     }
 
-    public void onConvertButtonPressed(View v)
+    public void onDecodeButtonPressed(View v)
     {
-        String theBinaryNumber = this.inputET.getText().toString();
+        String currentEncodedValue = this.answerTV.getText().toString();
 
-        if(this.negativeSwitch.isChecked())
+        //is the current value actually encoded?
+        if(currentEncodedValue.charAt(0) == '0')
         {
-            this.answerTV.setText(this.encodeAsTwosComplement(theBinaryNumber));
+            this.decodeTV.setText("" + this.binaryToDecimal(currentEncodedValue));
         }
         else
         {
-            this.answerTV.setText(theBinaryNumber);
-        }
+            //we need to actually decode the value to get the correct negative decimal number.
 
+        }
+    }
+
+    public void onConvertButtonPressed(View v)
+    {
+        int theDecimalNumber = Integer.parseInt(this.inputET.getText().toString());
+
+        if(theDecimalNumber < 0)
+        {
+            this.answerTV.setText(this.encodeAsTwosComplement(0 + this.decimalToBinary(theDecimalNumber*-1)));
+        }
+        else
+        {
+            this.answerTV.setText(0 + this.decimalToBinary(theDecimalNumber));
+        }
     }
 }
