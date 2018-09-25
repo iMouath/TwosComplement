@@ -38,7 +38,16 @@ public class MainActivity extends AppCompatActivity
     private String addOne(String bin)
     {
         //will return a new String that is the given String with 1 added to it
-        return bin;
+        StringBuilder answer = new StringBuilder(bin);
+        for(int i = 0; i < answer.length()-1; i++){
+            if(bin.charAt(i) == '0'){
+                answer.setCharAt(i, '1');
+                break;
+            }else{
+                answer.setCharAt(i, '0');
+            }
+        }
+        return String.valueOf(answer.reverse()); //returned it reversed cause I built it backward, and no need to rewrite the loop
     }
 
     private String encodeAsTwosComplement(String bin)
